@@ -9,6 +9,7 @@ from time import sleep
 import pyperclip
 from fake_useragent import UserAgent
 from seleniumwire import webdriver
+import pyautogui as gui
 
 a = int(input('введите кол-во кошельков '))
 b = str(input('введите api ключ для капчи '))
@@ -43,17 +44,22 @@ while k < (a):
             'user-agent': useragent
         }
         sleep(2)
-        driver.get("chrome-extension://ifibfemgeogfhoebkmokieepdoobkbpo/options/options.html")
+        driver.switch_to.window(window_name=driver.window_handles[0])
+        driver.close()
         sleep(2)
         driver.switch_to.window(window_name=driver.window_handles[0])
         sleep(1)
+        driver.get("chrome-extension://ifibfemgeogfhoebkmokieepdoobkbpo/options/options.html")
+        sleep(2)
         driver.find_element(by=By.XPATH,
                             value=('/ html / body / div / div[1] / table / tbody / tr[1] / td[2] / input')).send_keys(b)
         driver.find_element(by=By.XPATH,
                             value=('/ html / body / div / div[1] / table / tbody / tr[1] / td[3] / button')).click()
+        sleep(2)
+        gui.press('enter')
         sleep(1)
-        driver.switch_to.window(window_name=driver.window_handles[1])
-        sleep(1)
+        driver.get('chrome-extension://ffbceckpkpbcmgiaehlloocglmijnpmp/index.html')
+        sleep(2)
         driver.find_element(by=By.XPATH, value=('/html/body/div[1]/div/div/div[2]/div[3]/a[1]/div/span')).click()
         driver.find_element(by=By.XPATH, value=('/html/body/div[1]/div/div/div[2]/form/div[1]/div[1]/div/input')).send_keys("1234554321")
         driver.find_element(by=By.XPATH, value=('/html/body/div[1]/div/div/div[2]/form/div[1]/div[2]/div/input')).send_keys("1234554321")
@@ -97,6 +103,8 @@ while k < (a):
             button.click()
         except Exception as e:
             print("Произошла ошибка")
+        driver.get(c)
+        sleep(15)
         with open('wallets.txt', "a") as file:
             file.write(wallet + "\n")
             file.close
@@ -106,7 +114,6 @@ while k < (a):
             file.close
         k += 1
         print(f'создано {k} кошельков ')
-        driver.get(c)
         sleep(1)
         driver.quit()
     except:
